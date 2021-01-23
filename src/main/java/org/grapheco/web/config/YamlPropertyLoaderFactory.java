@@ -5,6 +5,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.support.DefaultPropertySourceFactory;
 import org.springframework.core.io.support.EncodedResource;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * the DefaultPropertySourceFactory can't read complicated configuration in the
@@ -21,6 +22,7 @@ public class YamlPropertyLoaderFactory extends DefaultPropertySourceFactory {
 			return super.createPropertySource(name, resource);
 		}
 
-		return new YamlPropertySourceLoader().load(resource.getResource().getFilename(), resource.getResource(), null);
+		List<PropertySource<?>> properties= new YamlPropertySourceLoader().load(resource.getResource().getFilename(), resource.getResource());
+		return properties.get(0);
 	}
 }

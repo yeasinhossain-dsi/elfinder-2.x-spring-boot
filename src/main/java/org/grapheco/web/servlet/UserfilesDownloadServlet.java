@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.util.UriUtils;
 
@@ -27,7 +28,10 @@ public class UserfilesDownloadServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String USERFILES_BASE_URL = "userfiles";
-		String userfilesBaseDir = ElfinderBeansConfiguration.userfilesBaseDir();
+
+		String baseDir = FileUtils.getUserDirectoryPath();
+		baseDir = baseDir + File.separator + "FileUploadDirectory";
+		String userfilesBaseDir = baseDir;
 		
 		String filepath = req.getRequestURI();
 		String regpath = USERFILES_BASE_URL;
@@ -37,7 +41,7 @@ public class UserfilesDownloadServlet extends HttpServlet {
 		}
 		try {
 			filepath = UriUtils.decode(filepath, "UTF-8");
-		} catch (UnsupportedEncodingException e1) {
+		} catch (Exception e1) {
 			resp.getWriter().write(String.format("Explain file path failure，URL:%s (%s)", filepath, e1.getMessage()));
 		}
 
