@@ -1,6 +1,4 @@
-com:
-    little:
-        tiger:
+san:
             userFilePath: /userfiles/
             volumes:
             -   id: files

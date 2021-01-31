@@ -14,18 +14,17 @@ import org.springframework.context.annotation.PropertySource;
  *
  */
 @Configuration
-@ConfigurationProperties(prefix = "com.little.tiger")
-//如果只有一个主配置类文件，@PropertySource可以不写
-@PropertySource(value="classpath:elfinder-volumes.yml", encoding = "UTF-8", factory = YamlPropertyLoaderFactory.class)
+@ConfigurationProperties(prefix = "san")
+@PropertySource(value = "classpath:elfinder-volumes.yml", encoding = "UTF-8", factory = YamlPropertyLoaderFactory.class)
 public class VolumesProperties {
-    private List<Map<String,String>> volumes = new ArrayList<>();
-    private String userFilePath;
-    
-	public List<Map<String,String>> getVolumes() {
+	private List<Map<String, String>> volumes = new ArrayList<>();
+	private String userFilePath;
+
+	public List<Map<String, String>> getVolumes() {
 		return volumes;
 	}
 
-	public void setVolumes(List<Map<String,String>> volumes) {
+	public void setVolumes(List<Map<String, String>> volumes) {
 		this.volumes = volumes;
 	}
 

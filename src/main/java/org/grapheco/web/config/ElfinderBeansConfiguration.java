@@ -1,11 +1,10 @@
-package org.grapheco.web.servlet;
+package org.grapheco.web.config;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.grapheco.elfinder.controller.ConnectorController;
 import org.grapheco.elfinder.controller.executor.CommandExecutorFactory;
 import org.grapheco.elfinder.controller.executor.DefaultCommandExecutorFactory;
@@ -17,11 +16,10 @@ import org.grapheco.elfinder.impl.FsSecurityCheckForAll;
 import org.grapheco.elfinder.impl.StaticFsServiceFactory;
 import org.grapheco.elfinder.localfs.LocalFsVolume;
 import org.grapheco.elfinder.service.FsItem;
-import org.grapheco.web.config.VolumesProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.util.StringUtils;
 
 /**
@@ -36,6 +34,13 @@ import org.springframework.util.StringUtils;
 @Configuration
 public class ElfinderBeansConfiguration {
 
+	public static String MOUNT;
+
+	@Value("${directory.mount}")
+	public void setMount(String mount) {
+		MOUNT = mount;
+	}
+
 	@Autowired
 	VolumesProperties volumes;
 
@@ -49,8 +54,7 @@ public class ElfinderBeansConfiguration {
 	protected CommandExecutorFactory createCommandExecutorFactory() {
 		DefaultCommandExecutorFactory defaultCommandExecutorFactory = new DefaultCommandExecutorFactory();
 		defaultCommandExecutorFactory
-				.setClassNamePattern(OpenCommandExecutor.class.getPackage().getName()
-						+ ".%sCommandExecutor");
+				.setClassNamePattern(OpenCommandExecutor.class.getPackage().getName() + ".%sCommandExecutor");
 		defaultCommandExecutorFactory.setFallbackCommand(new MissingCommandExecutor());
 		return defaultCommandExecutorFactory;
 	}
@@ -71,8 +75,7 @@ public class ElfinderBeansConfiguration {
 	}
 
 	public static String userfilesBaseDir() {
-		String baseDir = FileUtils.getUserDirectoryPath();
-		return baseDir + File.separator + "FileUploadDirectory";
+		return ElfinderBeansConfiguration.MOUNT;
 	}
 
 	/**
